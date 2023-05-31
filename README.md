@@ -1,2 +1,3 @@
-# meal_ordering_online
-Software Engineering Course Design Assignments,a simple online ordering system was implemented
+# 软件工程课程设计——网上订餐系统
+
+该仓库为系统的后端部分，主要使用技术为    
