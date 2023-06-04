@@ -1,49 +1,47 @@
 package com.pro.www.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- * 员工信息
+ * 套餐
  * </p>
  *
  * @author pro
  * @since 2023-06-04
  */
-@ApiModel(value = "Employee对象", description = "员工信息")
-public class Employee implements Serializable {
+@ApiModel(value = "Setmeal对象", description = "套餐")
+public class Setmeal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键")
     private Long id;
 
-    @ApiModelProperty("姓名")
+    @ApiModelProperty("菜品分类id")
+    private Long categoryId;
+
+    @ApiModelProperty("套餐名称")
     private String name;
 
-    @ApiModelProperty("用户名")
-    private String username;
+    @ApiModelProperty("套餐价格")
+    private BigDecimal price;
 
-    @ApiModelProperty("密码")
-    private String password;
-
-    @ApiModelProperty("手机号")
-    private String phone;
-
-    @ApiModelProperty("性别")
-    private String sex;
-
-    @ApiModelProperty("身份证号")
-    private String idNumber;
-
-    @ApiModelProperty("状态 0:禁用，1:正常")
+    @ApiModelProperty("状态 0:停用 1:启用")
     private Integer status;
+
+    @ApiModelProperty("编码")
+    private String code;
+
+    @ApiModelProperty("描述信息")
+    private String description;
+
+    @ApiModelProperty("图片")
+    private String image;
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
@@ -52,12 +50,13 @@ public class Employee implements Serializable {
     private LocalDateTime updateTime;
 
     @ApiModelProperty("创建人")
-    @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
     @ApiModelProperty("修改人")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
+
+    @ApiModelProperty("是否删除")
+    private Integer isDeleted;
 
     public Long getId() {
         return id;
@@ -66,6 +65,13 @@ public class Employee implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
     public String getName() {
         return name;
     }
@@ -73,40 +79,12 @@ public class Employee implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public String getUsername() {
-        return username;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-    public String getIdNumber() {
-        return idNumber;
-    }
-
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
     public Integer getStatus() {
         return status;
@@ -114,6 +92,27 @@ public class Employee implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
     public LocalDateTime getCreateTime() {
         return createTime;
@@ -143,22 +142,30 @@ public class Employee implements Serializable {
     public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Setmeal{" +
             "id=" + id +
+            ", categoryId=" + categoryId +
             ", name=" + name +
-            ", username=" + username +
-            ", password=" + password +
-            ", phone=" + phone +
-            ", sex=" + sex +
-            ", idNumber=" + idNumber +
+            ", price=" + price +
             ", status=" + status +
+            ", code=" + code +
+            ", description=" + description +
+            ", image=" + image +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +
             ", updateUser=" + updateUser +
+            ", isDeleted=" + isDeleted +
         "}";
     }
 }

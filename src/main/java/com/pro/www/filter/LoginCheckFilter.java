@@ -13,7 +13,7 @@ import java.io.IOException;
 
 // 检查用户登录
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
+@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/backend")
 public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER= new AntPathMatcher();
 
@@ -28,7 +28,8 @@ public class LoginCheckFilter implements Filter {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/front/**"
+                "/front/**",
+
         };
         boolean check = check(urls,requestURL);
 
