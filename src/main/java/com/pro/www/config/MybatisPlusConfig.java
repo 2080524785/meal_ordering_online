@@ -1,4 +1,4 @@
-package com.pro.www.handler;
+package com.pro.www.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
