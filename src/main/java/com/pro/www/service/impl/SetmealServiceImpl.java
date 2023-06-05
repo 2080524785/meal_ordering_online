@@ -2,7 +2,7 @@ package com.pro.www.service.impl;
 
 import com.pro.www.entity.Setmeal;
 import com.pro.www.mapper.SetmealMapper;
-import com.pro.www.service.ISetmealService;
+import com.pro.www.service.IetmealService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-04
  */
 @Service
-public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> implements ISetmealService {
+public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> implements IetmealService {
 
 }

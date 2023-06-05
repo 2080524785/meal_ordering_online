@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author pro
  * @since 2023-06-04
  */
-public interface IShoppingCartService extends IService<ShoppingCart> {
+public interface ShoppingCartService extends IService<ShoppingCart> {
 
 }

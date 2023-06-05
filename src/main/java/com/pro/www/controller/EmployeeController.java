@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/employee")
 @Api(tags = "员工管理")
 public class EmployeeController {
@@ -82,7 +82,7 @@ public class EmployeeController {
     @GetMapping("/page")
     @ApiOperation(value = "员工信息查询")
     public R<Page> page(int page, int pageSize, String name){
-        log.info("page = {},pageSize = {},name = {}" ,page,pageSize,name);
+        log.info("[INFO] page = {},pageSize = {},name = {}" ,page,pageSize,name);
 
         Page pageInfo = new Page(page,pageSize);
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper();

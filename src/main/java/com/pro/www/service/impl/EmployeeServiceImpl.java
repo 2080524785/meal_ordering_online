@@ -1,8 +1,8 @@
 package com.pro.www.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.pro.www.entity.Employee;
 import com.pro.www.mapper.EmployeeMapper;
-import com.pro.www.service.IEmployeeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-04
  */
 @Service
-public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements IEmployeeService {
+public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements IService<Employee> {
 
 }

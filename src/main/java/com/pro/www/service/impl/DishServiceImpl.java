@@ -2,7 +2,7 @@ package com.pro.www.service.impl;
 
 import com.pro.www.entity.Dish;
 import com.pro.www.mapper.DishMapper;
-import com.pro.www.service.IDishService;
+import com.pro.www.service.DishService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-04
  */
 @Service
-public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements IDishService {
+public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements DishService {
 
 }

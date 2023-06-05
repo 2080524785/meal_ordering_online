@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author pro
  * @since 2023-06-04
  */
-public interface IDishService extends IService<Dish> {
+public interface DishService extends IService<Dish> {
 
 }

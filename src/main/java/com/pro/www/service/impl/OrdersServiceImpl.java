@@ -2,7 +2,7 @@ package com.pro.www.service.impl;
 
 import com.pro.www.entity.Orders;
 import com.pro.www.mapper.OrdersMapper;
-import com.pro.www.service.IOrdersService;
+import com.pro.www.service.OrdersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-04
  */
 @Service
-public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements IOrdersService {
+public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements OrdersService {
 
 }
