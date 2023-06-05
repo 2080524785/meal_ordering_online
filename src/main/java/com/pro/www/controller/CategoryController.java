@@ -4,7 +4,7 @@ package com.pro.www.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pro.www.entity.Category;
-import com.pro.www.pojo.R;
+import com.pro.www.dto.R;
 import com.pro.www.service.impl.CategoryServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
+import java.util.List;
 
 /**
  * <p>
@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
     @GetMapping("/page")
-    @ApiOperation(value = "分类信息查询")
+    @ApiOperation(value = "分类查询")
     public R<Page> page(int page, int pageSize){
         log.info("[INFO] page = {},pageSize = {}" ,page,pageSize);
         Page pageInfo = new Page<>(page,pageSize);
@@ -59,10 +59,21 @@ public class CategoryController {
         return R.success("删除成功");
     }
     @PutMapping
+    @ApiOperation(value = "修改分类")
     public R<String> update(@RequestBody Category category){
         categoryService.updateById(category);
         log.info("[INFO] 修改成功，{}",category.toString());
         return null;
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "根据条件查询分类")
+    public R<List<Category>> list(Category category){
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(category.getType()!=null,Category::getType,category.getType());
+        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        List<Category> list =  categoryService.list(queryWrapper);
+        return R.success(list);
     }
 
 }

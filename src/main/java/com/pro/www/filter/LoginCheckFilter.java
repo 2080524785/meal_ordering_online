@@ -2,7 +2,7 @@ package com.pro.www.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.pro.www.common.BaseContext;
-import com.pro.www.pojo.R;
+import com.pro.www.dto.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 // 检查用户登录
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/backend")
+@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER= new AntPathMatcher();
 

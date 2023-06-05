@@ -1,6 +1,5 @@
-package com.pro.www.pojo;
+package com.pro.www.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.HashMap;

@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pro.www.entity.Employee;
-import com.pro.www.pojo.R;
-import com.pro.www.service.EmployeeService;
+import com.pro.www.dto.R;
 import com.pro.www.service.impl.EmployeeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -80,7 +77,7 @@ public class EmployeeController {
 
 
     @GetMapping("/page")
-    @ApiOperation(value = "员工信息查询")
+    @ApiOperation(value = "员工查询")
     public R<Page> page(int page, int pageSize, String name){
         log.info("[INFO] page = {},pageSize = {},name = {}" ,page,pageSize,name);
 
@@ -93,7 +90,7 @@ public class EmployeeController {
         return R.success(pageInfo);
     }
     @PutMapping
-    @ApiOperation(value = "员工信息修改")
+    @ApiOperation(value = "员工修改")
     public R<String> update(HttpServletRequest request,@RequestBody Employee employee){
         Long id = (Long) request.getSession().getAttribute("employee");
 
@@ -107,7 +104,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "根据ID查询员工信息")
+    @ApiOperation(value = "根据ID查询员工")
     public R<Employee> getById(@PathVariable Long id){
         Employee employee = employeeService.getById(id);
 
