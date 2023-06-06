@@ -22,6 +22,9 @@ public class DataMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
+        metaObject.setValue("updateTime", LocalDateTime.now());
+        metaObject.setValue("updateUser", BaseContext.getCurrentId());
         log.info("[INFO] update 公共字段自动填充");
+
     }
 }

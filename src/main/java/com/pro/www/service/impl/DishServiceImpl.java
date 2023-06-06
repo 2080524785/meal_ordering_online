@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     }
 
     @Override
+
     public DishDto getByIDWithFlavor(Long id) {
         Dish dish = this.getById(id);
         DishDto dishDto = new DishDto();
@@ -53,12 +55,14 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
         LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(DishFlavor::getDishId,id);
+
         List<DishFlavor> flavors = dishFlavorService.list(queryWrapper);
         dishDto.setFlavors(flavors);
         return dishDto;
     }
 
     @Override
+    @Transactional
     public void updateWithFlavor(DishDto dishDto) {
         this.updateById(dishDto);
 
@@ -73,5 +77,15 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             return item;
         }).collect(Collectors.toList());
        dishFlavorService.saveBatch(flavors);
+    }
+    @Override
+
+    public void removeWithDish(List<Long> ids){
+        List<Dish> dishList =this.listByIds(ids);
+        dishList.stream().map((item)->{
+            item.setIsDeleted(1);
+            return item;
+        }).collect(Collectors.toList());
+        this.updateBatchById(dishList);
     }
 }

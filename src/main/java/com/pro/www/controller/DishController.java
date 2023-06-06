@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,7 @@ public class DishController {
 
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(name!=null,Dish::getName,name);
+        queryWrapper.eq(Dish::getIsDeleted,0);
         queryWrapper.orderByDesc(Dish::getUpdateTime);
         dishService.page(pageInfo,queryWrapper);
         BeanUtils.copyProperties(pageInfo,dishDtoPage,"records");
@@ -99,5 +101,38 @@ public class DishController {
         log.info("[INFO] 新增菜品成功,{}",dishDto.toString());
 
         return R.success("新增菜品成功");
+    }
+    @PostMapping("/status/{status}")
+    @ApiOperation(value = "修改菜品状态")
+    public R<String> status(@PathVariable int status,@RequestParam Long[] ids){
+        List<Dish> dishList =dishService.listByIds(Arrays.asList(ids));
+        dishList.stream().map((item)->{
+           item.setStatus(status);
+           return item;
+        }).collect(Collectors.toList());
+        dishService.updateBatchById(dishList);
+        log.info("[INFO] 修改菜品状态成功");
+        return R.success("修改成功");
+
+    }
+
+    @DeleteMapping
+    @ApiOperation(value = "删除菜品")
+    public R<String> status(@RequestParam List<Long> ids){
+        dishService.removeWithDish(ids);
+        log.info("[INFO] 删除套餐成功");
+        return R.success("删除成功");
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "查询不同种类菜品")
+    public R<List<Dish>> list(Dish dish){
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId()!=null,Dish::getCategoryId,dish.getCategoryId());
+        queryWrapper.eq(Dish::getStatus,1);
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        List<Dish> list = dishService.list(queryWrapper);
+        return R.success(list);
+
     }
 }

@@ -92,10 +92,7 @@ public class EmployeeController {
     @PutMapping
     @ApiOperation(value = "员工修改")
     public R<String> update(HttpServletRequest request,@RequestBody Employee employee){
-        Long id = (Long) request.getSession().getAttribute("employee");
 
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(id);
         employeeService.updateById(employee);
 
         log.info("[INFO] 修改员工信息成功");
@@ -108,7 +105,6 @@ public class EmployeeController {
     public R<Employee> getById(@PathVariable Long id){
         Employee employee = employeeService.getById(id);
 
-        log.info("[INFO] 查询成功,员工信息:{}",employee.toString());
         if(employee!=null){
             log.info("[INFO] 查询成功,员工信息:{}",employee.toString());
 

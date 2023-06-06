@@ -4,6 +4,8 @@ import com.pro.www.dto.DishDto;
 import com.pro.www.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 菜品管理 服务类
@@ -18,4 +20,5 @@ public interface DishService extends IService<Dish> {
 
     public DishDto getByIDWithFlavor(Long id);
     public void updateWithFlavor(DishDto dishDto);
+    public void removeWithDish(List<Long> ids);
 }

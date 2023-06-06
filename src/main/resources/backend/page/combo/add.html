@@ -605,7 +605,7 @@
             if(response.code === 0 && response.msg === '未登录'){
               window.top.location.href = '/backend/page/login/login.html'
             }else{
-              this.imageUrl = `/filezzzzzz/download?name=${response.data}`
+              this.imageUrl = `/file/download?name=${response.data}`
               this.ruleForm.image = response.data
             }
           },
