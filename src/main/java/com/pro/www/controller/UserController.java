@@ -3,6 +3,7 @@ package com.pro.www.controller;
 
 import com.aliyuncs.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.pro.www.common.BaseContext;
 import com.pro.www.dto.R;
 import com.pro.www.dto.SMS;
 import com.pro.www.entity.User;
@@ -34,7 +35,7 @@ import java.util.Objects;
 @RestController
 @Slf4j
 @RequestMapping("/user")
-@Api(tags = "用户管理")
+@Api(tags = "用户登录")
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
