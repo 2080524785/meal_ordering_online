@@ -125,6 +125,22 @@ public class SMS {
         return "true";
     }
 
+    public String msgSendTest(String mobile)throws Exception{
+        /*此处可输入你的手机号码进行测试*/
+
+        /*进行正则关系校验*/
+        if (mobile == null || mobile == "") {
+            System.out.println("手机号为空");
+            return "";
+        }
+
+
+        /*获取验证码*/
+        code = vcode();
+
+        return "ture";
+    }
+
     /**
      * 生成6位随机数验证码
      * @return

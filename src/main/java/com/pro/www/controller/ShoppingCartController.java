@@ -2,6 +2,7 @@ package com.pro.www.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.pro.www.common.BaseContext;
 import com.pro.www.dto.R;
 import com.pro.www.entity.ShoppingCart;
@@ -61,8 +62,61 @@ public class ShoppingCartController {
     public R<ShoppingCart> addShort(@RequestBody ShoppingCart shoppingCart){
         Long userId = BaseContext.getCurrentId();
         shoppingCart.setUserId(userId);
-        //TODO
+
+
+        LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ShoppingCart::getUserId,userId);
+        if(shoppingCart.getDishId()!=null){
+            queryWrapper.eq(ShoppingCart::getDishId,shoppingCart.getDishId());
+        }else{
+            queryWrapper.eq(ShoppingCart::getSetmealId,shoppingCart.getSetmealId());
+        }
+        ShoppingCart shoppingCart1 = shoppingCartService.getOne(queryWrapper);
+        if(shoppingCart1!=null){
+            shoppingCart1.setNumber(shoppingCart1.getNumber()+1);
+            shoppingCartService.updateById(shoppingCart1);
+            log.info("[INFO] 已存在该菜品，数量+1");
+            return R.success(shoppingCart1);
+        }else{
+            shoppingCart.setNumber(1);
+            shoppingCartService.save(shoppingCart);
+            log.info("[INFO] 添加菜品成功");
+            return R.success(shoppingCart);
+        }
+    }
+    @PostMapping("/sub")
+    @ApiOperation("减少购物车数据")
+    public R<ShoppingCart> sub(@RequestBody ShoppingCart shoppingCart){
         Long dishId = shoppingCart.getDishId();
-        return R.success(null);
+        Long setmealId = shoppingCart.getSetmealId();
+
+        LambdaQueryWrapper<ShoppingCart> shoppingCartLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getUserId,BaseContext.getCurrentId());
+        if(dishId!=null){
+            shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getDishId,dishId);
+            ShoppingCart dishCart = shoppingCartService.getOne(shoppingCartLambdaQueryWrapper);
+            dishCart.setNumber(dishCart.getNumber()-1);
+            if(dishCart.getDishId()>0){
+                shoppingCartService.updateById(dishCart);
+            }else{
+                shoppingCartService.removeById(dishCart);
+            }
+            log.info("[INFO] 更新成功");
+            return R.success(dishCart);
+        }
+
+        if(setmealId!=null){
+            shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getSetmealId,setmealId);
+            ShoppingCart setmealCart = shoppingCartService.getOne(shoppingCartLambdaQueryWrapper);
+            setmealCart.setNumber(setmealCart.getNumber()-1);
+            if(setmealCart.getDishId()>0){
+                shoppingCartService.updateById(setmealCart);
+            }else{
+                shoppingCartService.removeById(setmealCart);
+            }
+            log.info("[INFO] 更新成功");
+            return R.success(setmealCart);
+        }
+        return  R.error("更新失败");
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.HttpCookie;
 import java.util.Map;
@@ -62,7 +63,34 @@ public class UserController {
         return R.error("验证码发送失败");
 
     }
+
+    @PostMapping("/sendMsgTest")
+    @ApiOperation(value = "发送验证码测试")
+    // 在后端获取验证码测试，避免使用阿里云短信服务(还剩90）
+    public R<String> sendMsgTest(@RequestBody User user, HttpSession session){
+
+        String phone = user.getPhone();
+        if(StringUtils.isNotEmpty(phone)){
+
+            try {
+                SMS sms = new SMS();
+                sms.msgSendTest(phone);
+                session.setAttribute(phone,sms.getCode());
+                log.info("[INFO] 验证码发送成功,{}",sms.getCode());
+                return  R.success("验证码发送成功");
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        log.error("[ERROR] 验证码发送失败");
+        return R.error("验证码发送失败");
+
+    }
+
+
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
     public R<User> login(@RequestBody Map map,HttpSession session){
         String phone = map.get("phone").toString();
         String code = map.get("code").toString();
@@ -88,6 +116,14 @@ public class UserController {
         return R.error("验证码错误");
 
 
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation("用户登出")
+    public R<String> logout(HttpServletRequest request){
+        log.info("[INFO] 用户{} 登出",request.getSession().getAttribute("user"));
+        request.getSession().removeAttribute("user");
+        return R.success("退出成功");
     }
 
 

@@ -56,6 +56,7 @@ public class AddressBookController {
 
     }
     @GetMapping("/{id}")
+    @ApiOperation(value = "按id查找地址")
     public R<AddressBook> get(@PathVariable Long id){
         AddressBook addressBook = addressBookService.getById(id);
         if(addressBook!=null){
@@ -68,6 +69,7 @@ public class AddressBookController {
     }
 
     @GetMapping("/default")
+    @ApiOperation(value = "查询默认地址")
     public R<AddressBook> getDefult(){
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId,BaseContext.getCurrentId());
@@ -83,6 +85,7 @@ public class AddressBookController {
     }
 
     @GetMapping("/list")
+    @ApiOperation(value = "查询所有地址")
     public R<List<AddressBook>> list(AddressBook addressBook){
         addressBook.setUserId(BaseContext.getCurrentId());
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();

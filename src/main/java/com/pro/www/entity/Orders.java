@@ -3,6 +3,9 @@ package com.pro.www.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -48,13 +51,13 @@ public class Orders implements Serializable {
 
     @ApiModelProperty("备注")
     private String remark;
-
+    @ApiModelProperty("电话")
     private String phone;
-
+    @ApiModelProperty("地址")
     private String address;
-
+    @ApiModelProperty("用户名")
     private String userName;
-
+    @ApiModelProperty("收货人")
     private String consignee;
 
     public Long getId() {
