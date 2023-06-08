@@ -7,6 +7,7 @@ import com.pro.www.dto.DishDto;
 import com.pro.www.dto.R;
 import com.pro.www.entity.Category;
 import com.pro.www.entity.Dish;
+import com.pro.www.entity.DishFlavor;
 import com.pro.www.service.impl.CategoryServiceImpl;
 import com.pro.www.service.impl.DishFlavorServiceImpl;
 import com.pro.www.service.impl.DishServiceImpl;
@@ -126,13 +127,35 @@ public class DishController {
 
     @GetMapping("/list")
     @ApiOperation(value = "查询不同种类菜品")
-    public R<List<Dish>> list(Dish dish){
+    public R<List<DishDto>> list(Dish dish){
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId()!=null,Dish::getCategoryId,dish.getCategoryId());
         queryWrapper.eq(Dish::getStatus,1);
         queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
         List<Dish> list = dishService.list(queryWrapper);
-        return R.success(list);
+
+
+
+        List<DishDto> dishDtos = list.stream().map((item)->{
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item,dishDto);
+            Long categpryId = item.getCategoryId();
+            Category category = categoryService.getById(categpryId);
+            if(category!=null){
+                String categoryName = category.getName();
+                dishDto.setCategoryName(categoryName);
+            }
+
+            Long dishId = item.getId();
+            LambdaQueryWrapper<DishFlavor> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(DishFlavor::getDishId,dishId);
+            List<DishFlavor> dishFlavors = dishFlavorService.list(lambdaQueryWrapper);
+            dishDto.setFlavors(dishFlavors);
+            return dishDto;
+        }).collect(Collectors.toList());
+        log.info("[INFO] 查询菜品以及口味信息成功");
+        return R.success(dishDtos);
 
     }
+
 }
