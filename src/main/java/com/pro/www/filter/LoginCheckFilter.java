@@ -31,9 +31,8 @@ public class LoginCheckFilter implements Filter {
                 "/backend/**",
                 "/front/**",
                 "/user/sendMsg",
-                "/user/login"
-
-
+                "/user/login",
+                "/user/sendMsgTest",
         };
         boolean check = check(urls,requestURL);
 
