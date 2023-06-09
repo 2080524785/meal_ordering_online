@@ -17,7 +17,7 @@ public class MealOrderingOnlineApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MealOrderingOnlineApplication.class, args);
-        log.info("[INFO] 项目启动");
+        log.info("[INFO] 原神，启动！");
     }
 
 }
