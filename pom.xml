@@ -8,7 +8,7 @@
         <version>2.4.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.pro</groupId>
     <artifactId>meal_ordering_online</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>meal_ordering_online</name>

@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @Api(tags = "订单管理")
-@RequestMapping("/orders")
+@RequestMapping("/order")
 public class OrdersController {
     @Autowired
     private OrdersServiceImpl ordersService;

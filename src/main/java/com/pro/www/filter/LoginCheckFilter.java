@@ -14,7 +14,7 @@ import java.io.IOException;
 
 // 检查用户登录
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
+@WebFilter(filterName = "loginCheckFilter",urlPatterns = {"/backend/**","/front/**","/employee/**","/user/**"})
 public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER= new AntPathMatcher();
 
@@ -32,6 +32,7 @@ public class LoginCheckFilter implements Filter {
                 "/front/**",
                 "/user/sendMsg",
                 "/user/login"
+
 
 
         };

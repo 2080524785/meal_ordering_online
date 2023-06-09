@@ -12,6 +12,7 @@ import com.pro.www.entity.Setmeal;
 import com.pro.www.service.impl.CategoryServiceImpl;
 import com.pro.www.service.impl.SetmealDishServiceImpl;
 import com.pro.www.service.impl.SetmealServiceImpl;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("/setmeal")
+@Api(tags = "套餐管理")
 public class SetmealController {
     @Autowired
     private SetmealDishServiceImpl setmealDishService;
