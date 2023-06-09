@@ -125,6 +125,4 @@ public class UserController {
         request.getSession().removeAttribute("user");
         return R.success("退出成功");
     }
-
-
 }
