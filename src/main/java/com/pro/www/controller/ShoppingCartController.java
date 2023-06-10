@@ -73,9 +73,9 @@ public class ShoppingCartController {
         }
         ShoppingCart shoppingCart1 = shoppingCartService.getOne(queryWrapper);
         if(shoppingCart1!=null){
-            shoppingCart1.setNumber(shoppingCart1.getNumber()+1);
+            shoppingCart1.setNumber(shoppingCart1.getNumber()+shoppingCart.getNumber());
             shoppingCartService.updateById(shoppingCart1);
-            log.info("[INFO] 已存在该菜品，数量+1");
+            log.info("[INFO] 已存在该菜品，数量+原来的");
             return R.success(shoppingCart1);
         }else{
             shoppingCart.setNumber(1);
