@@ -13,9 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -42,15 +39,13 @@ import java.util.concurrent.TimeUnit;
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
-
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @PostMapping("/sendMsg")
+    @GetMapping("/sendMsg")
     @ApiOperation(value = "发送验证码")
-    public R<String> sendMsg(@RequestBody User user, HttpSession session){
+    public R<String> sendMsg(@RequestParam String phone, HttpSession session){
 
-        String phone = user.getPhone();
         if(StringUtils.isNotEmpty(phone)){
 
             try {
@@ -70,12 +65,11 @@ public class UserController {
 
     }
 
-    @PostMapping("/sendMsgTest")
+    @GetMapping("/sendMsgTest")
     @ApiOperation(value = "发送验证码测试")
     // 在后端获取验证码测试，避免使用阿里云短信服务(还剩90）
-    public R<String> sendMsgTest(@RequestBody User user, HttpSession session){
+    public R<String> sendMsgTest(@RequestParam String phone, HttpSession session){
 
-        String phone = user.getPhone();
         if(StringUtils.isNotEmpty(phone)){
 
             try {
