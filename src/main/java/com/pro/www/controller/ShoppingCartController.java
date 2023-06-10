@@ -73,7 +73,7 @@ public class ShoppingCartController {
             queryWrapper.eq(ShoppingCart::getSetmealId,shoppingCart.getSetmealId());
         }
         ShoppingCart shoppingCart1 = shoppingCartService.getOne(queryWrapper);
-        if(shoppingCart1!=null){
+        if(shoppingCart1!=null&&shoppingCart1.getDishFlavor()==shoppingCart.getDishFlavor()){
             shoppingCart1.setNumber(shoppingCart1.getNumber()+shoppingCart.getNumber());
             shoppingCartService.updateById(shoppingCart1);
             log.info("[INFO] 已存在该菜品，数量+原来的");
