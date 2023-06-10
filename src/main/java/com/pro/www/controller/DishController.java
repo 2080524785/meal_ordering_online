@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -105,7 +106,9 @@ public class DishController {
 
         dishService.updateWithFlavor(dishDto);
         log.info("[INFO] 新增菜品成功,{}",dishDto.toString());
+        String keys = "dish_"+dishDto.getCategoryId()+"_1";
 
+        redisTemplate.delete(keys);
         return R.success("新增菜品成功");
     }
     @PostMapping("/status/{status}")
