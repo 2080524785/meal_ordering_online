@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -77,7 +78,7 @@ public class UserController {
                 sms.msgSendTest(phone);
 
 
-                redisTemplate.opsForValue().set(phone,sms.getCode(),5,TimeUnit.MINUTES);
+                redisTemplate.opsForValue().set(phone,sms.getCode(),5, TimeUnit.MINUTES);
                 log.info("[INFO] 验证码发送成功,{}",sms.getCode());
                 return  R.success("验证码发送成功");
 
