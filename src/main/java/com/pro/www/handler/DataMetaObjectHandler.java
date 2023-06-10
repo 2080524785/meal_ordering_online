@@ -16,6 +16,7 @@ public class DataMetaObjectHandler implements MetaObjectHandler {
         log.info("[INFO] insert 公共字段自动填充");
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("updateTime", LocalDateTime.now());
+        log.info(BaseContext.getCurrentId().toString());
         metaObject.setValue("createUser", BaseContext.getCurrentId());
         metaObject.setValue("updateUser", BaseContext.getCurrentId());
     }

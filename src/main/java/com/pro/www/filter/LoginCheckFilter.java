@@ -5,6 +5,7 @@ import com.pro.www.common.BaseContext;
 import com.pro.www.dto.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
@@ -16,7 +17,8 @@ import java.io.IOException;
 
 // 检查用户登录
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = {"/employee*","/backend*","/front*","/user*"})
+
+@WebFilter(filterName = "loginCheckFilter",urlPatterns = {"/employee/*","/backend/*","/front/*","/user/*","/category/*","/addressBook/*","/setmeal/*","/file/*","/dish/*","/order/*","/shoppingCart/*"})
 public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER= new AntPathMatcher();
 

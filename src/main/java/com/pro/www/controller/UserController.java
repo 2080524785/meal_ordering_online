@@ -115,7 +115,7 @@ public class UserController {
             }
             session.setAttribute("user",user.getId());
             log.info("[INFO] 登录成功");
-            BaseContext.setCurrentId(user.getId());
+
             redisTemplate.delete(phone);
 
             return R.success(user);
