@@ -28,7 +28,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/addressbook")
+@RequestMapping("/addressBook")
 @Api(tags = "地址薄（用户信息）")
 public class AddressBookController {
 
@@ -51,7 +51,7 @@ public class AddressBookController {
         addressBookService.setDefaultById(addressBook);
         // 避免函数未修改默认地址属性
         addressBook.setIsDefault(true);
-        log.info("设置默认地址成功,{}",addressBook.getDetail());
+        log.info("[INFO] 设置默认地址成功,{}",addressBook.getIsDefault());
         return R.success(addressBook);
 
     }

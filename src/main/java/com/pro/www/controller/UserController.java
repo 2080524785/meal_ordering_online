@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -41,6 +43,9 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @PostMapping("/sendMsg")
     @ApiOperation(value = "发送验证码")
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
@@ -51,7 +56,8 @@ public class UserController {
             try {
                 SMS sms = new SMS();
                 sms.msgSend(phone);
-                session.setAttribute(phone,sms.getCode());
+
+                redisTemplate.opsForValue().set(phone,sms.getCode(),5, TimeUnit.MINUTES);
                 log.info("[INFO] 验证码发送成功");
                 return  R.success("验证码发送成功");
 
@@ -75,7 +81,9 @@ public class UserController {
             try {
                 SMS sms = new SMS();
                 sms.msgSendTest(phone);
-                session.setAttribute(phone,sms.getCode());
+
+
+                redisTemplate.opsForValue().set(phone,sms.getCode(),5,TimeUnit.MINUTES);
                 log.info("[INFO] 验证码发送成功,{}",sms.getCode());
                 return  R.success("验证码发送成功");
 
@@ -94,7 +102,9 @@ public class UserController {
     public R<User> login(@RequestBody Map map,HttpSession session){
         String phone = map.get("phone").toString();
         String code = map.get("code").toString();
-        Object codeInSession = session.getAttribute(phone);
+
+        log.info("[INFO] 获取成功，电话为{}",phone);
+        Object codeInSession =redisTemplate.opsForValue().get(phone);
         if(codeInSession!=null&&codeInSession.equals(code)){
             LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(User::getPhone,phone);
@@ -110,6 +120,9 @@ public class UserController {
             }
             session.setAttribute("user",user.getId());
             log.info("[INFO] 登录成功");
+            BaseContext.setCurrentId(user.getId());
+            redisTemplate.delete(phone);
+
             return R.success(user);
         }
         log.error("[ERROR] 验证码错误");
@@ -118,7 +131,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/loginout")
     @ApiOperation("用户登出")
     public R<String> logout(HttpServletRequest request){
         log.info("[INFO] 用户{} 登出",request.getSession().getAttribute("user"));

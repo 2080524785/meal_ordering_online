@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.pro.www.common.BaseContext;
 import com.pro.www.dto.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -14,7 +16,7 @@ import java.io.IOException;
 
 // 检查用户登录
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = {"/backend/**","/front/**","/employee/**","/user/**"})
+@WebFilter(filterName = "loginCheckFilter",urlPatterns = {"/employee*","/backend*","/front*","/user*"})
 public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER= new AntPathMatcher();
 
@@ -33,6 +35,7 @@ public class LoginCheckFilter implements Filter {
                 "/user/sendMsg",
                 "/user/login",
                 "/user/sendMsgTest",
+                "/swagger-ui/**"
 
         };
         boolean check = check(urls,requestURL);
@@ -79,4 +82,7 @@ public class LoginCheckFilter implements Filter {
 
 
     }
+
+
+
 }

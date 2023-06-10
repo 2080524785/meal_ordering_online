@@ -146,4 +146,15 @@ public class OrdersController {
     }
 
 
+    @PostMapping("/pay")
+    @ApiOperation("支付订单")
+    public R<String> pay(@RequestBody Orders orders){
+        orders.setStatus(2);
+        orders.setCheckoutTime(LocalDateTime.now());
+        ordersService.updateById(orders);
+        log.info("[INFO] 支付成功");
+        return R.success("支付成功");
+    }
+
+
 }

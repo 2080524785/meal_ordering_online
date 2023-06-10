@@ -8,6 +8,7 @@ import com.pro.www.exception.CustomException;
 import com.pro.www.mapper.OrdersMapper;
 import com.pro.www.service.OrdersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * @since 2023-06-04
  */
 @Service
+@Slf4j
 public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements OrdersService {
     @Autowired
     private ShoppingCartServiceImpl shoppingCartService;
@@ -42,6 +44,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     @Override
     public void saveWithOrder(Orders orders){
         Long userId = BaseContext.getCurrentId();
+
         LambdaQueryWrapper<ShoppingCart> shoppingCartLambdaQueryWrapper = new LambdaQueryWrapper<>();
         shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getUserId,userId);
         List<ShoppingCart> shoppingCartList = shoppingCartService.list(shoppingCartLambdaQueryWrapper);
@@ -52,6 +55,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
 
         User user = userService.getById(userId);
+        if(user==null){
+            throw new CustomException("未获取该用户,请重新登录");
+        }
 
         Long addressBookId = orders.getAddressBookId();
         AddressBook addressBook =  addressBookService.getById(addressBookId);
@@ -79,7 +85,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
         orders.setId(orderId);
         orders.setOrderTime(LocalDateTime.now());
-        orders.setStatus(2);
+        orders.setStatus(1);
         orders.setAmount(new BigDecimal(amount.get()));
         orders.setUserId(userId);
         orders.setNumber(String.valueOf(orderId));
@@ -91,10 +97,12 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
                 + (addressBook.getDistrictName()==null?"":addressBook.getDistrictName())
                 +(addressBook.getDetail()==null?"":addressBook.getDetail())
                 );
+
         this.save(orders);
         orderDetailService.saveBatch(orderDetails);
 
         shoppingCartService.remove(shoppingCartLambdaQueryWrapper);
 
     }
+
 }
