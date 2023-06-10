@@ -61,6 +61,7 @@ public class ShoppingCartController {
     @ApiOperation(value = "添加购物车数据")
     public R<ShoppingCart> addShort(@RequestBody ShoppingCart shoppingCart){
         Long userId = BaseContext.getCurrentId();
+        log.info("[INFO] {}",userId.toString());
         shoppingCart.setUserId(userId);
 
 
@@ -96,7 +97,7 @@ public class ShoppingCartController {
             shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getDishId,dishId);
             ShoppingCart dishCart = shoppingCartService.getOne(shoppingCartLambdaQueryWrapper);
             dishCart.setNumber(dishCart.getNumber()-1);
-            if(dishCart.getDishId()>0){
+            if(dishCart.getNumber()>0){
                 shoppingCartService.updateById(dishCart);
             }else{
                 shoppingCartService.removeById(dishCart);

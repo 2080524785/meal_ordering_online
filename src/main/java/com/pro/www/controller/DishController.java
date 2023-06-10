@@ -16,12 +16,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +48,9 @@ public class DishController {
 
     @Autowired
     private CategoryServiceImpl categoryService;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     @PostMapping
     @ApiOperation(value = "添加菜品")
@@ -100,7 +106,9 @@ public class DishController {
 
         dishService.updateWithFlavor(dishDto);
         log.info("[INFO] 新增菜品成功,{}",dishDto.toString());
+        String keys = "dish_"+dishDto.getCategoryId()+"_1";
 
+        redisTemplate.delete(keys);
         return R.success("新增菜品成功");
     }
     @PostMapping("/status/{status}")
@@ -128,6 +136,15 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation(value = "查询不同种类菜品")
     public R<List<DishDto>> list(Dish dish){
+        List<DishDto> dishDtos = null;
+        String key = "dish_"+dish.getCategoryId()+"_"+dish.getStatus();
+        dishDtos = (List<DishDto>) redisTemplate.opsForValue().get(key);
+        if(dishDtos!=null){
+            return R.success(dishDtos);
+        }
+
+
+
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId()!=null,Dish::getCategoryId,dish.getCategoryId());
         queryWrapper.eq(Dish::getStatus,1);
@@ -136,7 +153,7 @@ public class DishController {
 
 
 
-        List<DishDto> dishDtos = list.stream().map((item)->{
+        dishDtos = list.stream().map((item)->{
             DishDto dishDto = new DishDto();
             BeanUtils.copyProperties(item,dishDto);
             Long categpryId = item.getCategoryId();
@@ -153,6 +170,7 @@ public class DishController {
             dishDto.setFlavors(dishFlavors);
             return dishDto;
         }).collect(Collectors.toList());
+        redisTemplate.opsForValue().set(key,dishDtos,60, TimeUnit.MINUTES);
         log.info("[INFO] 查询菜品以及口味信息成功");
         return R.success(dishDtos);
 
