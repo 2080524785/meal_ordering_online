@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author pro
  * @since 2023-06-04
  */
-@TableName("套餐")
+@TableName("setmeal_dish")
 @ApiModel(value = "SetmealDish对象", description = "套餐菜品关系")
 public class SetmealDish implements Serializable {
 
