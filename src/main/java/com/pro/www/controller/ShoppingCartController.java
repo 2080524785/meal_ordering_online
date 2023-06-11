@@ -67,19 +67,22 @@ public class ShoppingCartController {
 
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShoppingCart::getUserId,userId);
+
         if(shoppingCart.getDishId()!=null){
             queryWrapper.eq(ShoppingCart::getDishId,shoppingCart.getDishId());
+            if (shoppingCart.getDishFlavor()!=null || !shoppingCart.getDishFlavor().isEmpty()){
+                queryWrapper.eq(ShoppingCart::getDishFlavor,shoppingCart.getDishFlavor());
+            }
         }else{
             queryWrapper.eq(ShoppingCart::getSetmealId,shoppingCart.getSetmealId());
         }
         ShoppingCart shoppingCart1 = shoppingCartService.getOne(queryWrapper);
-        if(shoppingCart1!=null&&shoppingCart1.getDishFlavor()==shoppingCart.getDishFlavor()){
+        if(shoppingCart1!=null){
             shoppingCart1.setNumber(shoppingCart1.getNumber()+shoppingCart.getNumber());
             shoppingCartService.updateById(shoppingCart1);
             log.info("[INFO] 已存在该菜品，数量+原来的");
             return R.success(shoppingCart1);
         }else{
-            shoppingCart.setNumber(1);
             shoppingCartService.save(shoppingCart);
             log.info("[INFO] 添加菜品成功");
             return R.success(shoppingCart);
@@ -95,6 +98,9 @@ public class ShoppingCartController {
         shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getUserId,BaseContext.getCurrentId());
         if(dishId!=null){
             shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getDishId,dishId);
+            if (shoppingCart.getDishFlavor()!=null || !shoppingCart.getDishFlavor().isEmpty()){
+                shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getDishFlavor,shoppingCart.getDishFlavor());
+            }
             ShoppingCart dishCart = shoppingCartService.getOne(shoppingCartLambdaQueryWrapper);
             dishCart.setNumber(dishCart.getNumber()-1);
             if(dishCart.getNumber()>0){
