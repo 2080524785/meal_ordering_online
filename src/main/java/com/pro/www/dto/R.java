@@ -2,11 +2,13 @@ package com.pro.www.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class R<T>{
+public class R<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer code; // 1 为成功
     private String msg;
     private T data;
