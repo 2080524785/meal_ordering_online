@@ -96,4 +96,22 @@ public class AddressBookController {
         return R.success(addressBooks);
 
     }
+    @DeleteMapping
+    @ApiOperation("删除地址")
+    public R<String> delete(AddressBook addressBook){
+        LambdaUpdateWrapper<AddressBook> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(AddressBook::getId,addressBook.getId());
+        updateWrapper.set(AddressBook::getIsDeleted,1);
+        log.info("[INFO] 删除地址成功");
+        return R.success("删除成功");
+    }
+
+    @PutMapping
+    @ApiOperation("修改地址")
+    public R<String> update(AddressBook addressBook){
+        addressBookService.updateById(addressBook);
+        log.info("[INFO] 修改地址成功");
+        return R.success("修改成功");
+
+    }
 }

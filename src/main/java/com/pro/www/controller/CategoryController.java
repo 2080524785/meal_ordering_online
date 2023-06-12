@@ -63,7 +63,7 @@ public class CategoryController {
     public R<String> update(@RequestBody Category category){
         categoryService.updateById(category);
         log.info("[INFO] 修改成功，{}",category.toString());
-        return null;
+        return R.success("修改成功");
     }
 
     @GetMapping("/list")
