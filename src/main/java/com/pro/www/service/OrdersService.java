@@ -13,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrdersService extends IService<Orders> {
 
-    public void saveWithOrder(Orders orders);
+    public Orders saveWithOrder(Orders orders);
 }

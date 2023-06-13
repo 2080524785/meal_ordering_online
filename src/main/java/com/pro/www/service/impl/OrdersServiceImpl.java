@@ -42,7 +42,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     private OrderDetailServiceImpl orderDetailService;
     @Transactional
     @Override
-    public void saveWithOrder(Orders orders){
+    public Orders saveWithOrder(Orders orders){
         Long userId = BaseContext.getCurrentId();
 
         LambdaQueryWrapper<ShoppingCart> shoppingCartLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -102,7 +102,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         orderDetailService.saveBatch(orderDetails);
 
         shoppingCartService.remove(shoppingCartLambdaQueryWrapper);
-
+        return orders;
     }
 
 }

@@ -50,10 +50,10 @@ public class OrdersController {
     private ShoppingCartServiceImpl shoppingCartService;
     @PostMapping("/submit")
     @ApiOperation("提交订单")
-    public R<String> submit(@RequestBody Orders orders){
-        ordersService.saveWithOrder(orders);
+    public R<Orders> submit(@RequestBody Orders orders){
+        orders = ordersService.saveWithOrder(orders);
         log.info("[INFO] 下单成功");
-        return R.success("下单成功");
+        return R.success(orders);
     }
 
     @GetMapping("/userPage")
