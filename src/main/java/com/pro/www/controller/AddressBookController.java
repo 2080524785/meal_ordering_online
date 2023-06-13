@@ -108,7 +108,7 @@ public class AddressBookController {
 
     @PutMapping
     @ApiOperation("修改地址")
-    public R<String> update(AddressBook addressBook){
+    public R<String> update(@RequestBody AddressBook addressBook){
         addressBookService.updateById(addressBook);
         log.info("[INFO] 修改地址成功");
         return R.success("修改成功");
