@@ -96,7 +96,7 @@ public class AddressBookController {
         return R.success(addressBooks);
 
     }
-    @DeleteMapping
+    @DeleteMapping("/remove")
     @ApiOperation("删除地址")
     public R<String> delete(@RequestBody AddressBook addressBook){
         LambdaUpdateWrapper<AddressBook> updateWrapper = new LambdaUpdateWrapper<>();
@@ -106,7 +106,7 @@ public class AddressBookController {
         return R.success("删除成功");
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     @ApiOperation("修改地址")
     public R<String> update(@RequestBody AddressBook addressBook){
         addressBookService.updateById(addressBook);
