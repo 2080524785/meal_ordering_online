@@ -102,6 +102,7 @@ public class AddressBookController {
         LambdaUpdateWrapper<AddressBook> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(AddressBook::getId,addressBook.getId());
         updateWrapper.set(AddressBook::getIsDeleted,1);
+        addressBookService.remove(updateWrapper);
         log.info("[INFO] 删除地址成功");
         return R.success("删除成功");
     }
