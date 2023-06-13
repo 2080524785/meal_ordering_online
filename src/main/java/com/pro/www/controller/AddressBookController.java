@@ -98,7 +98,7 @@ public class AddressBookController {
     }
     @DeleteMapping
     @ApiOperation("删除地址")
-    public R<String> delete(AddressBook addressBook){
+    public R<String> delete(@RequestBody AddressBook addressBook){
         LambdaUpdateWrapper<AddressBook> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(AddressBook::getId,addressBook.getId());
         updateWrapper.set(AddressBook::getIsDeleted,1);
