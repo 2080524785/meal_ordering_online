@@ -106,7 +106,7 @@ public class AddressBookController {
         return R.success("删除成功");
     }
 
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     @ApiOperation("修改地址")
     public R<String> update(@RequestBody AddressBook addressBook){
         addressBookService.updateById(addressBook);
