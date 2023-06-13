@@ -1,6 +1,7 @@
 package com.pro.www.controller;
 
 
+import com.aliyuncs.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,9 +11,11 @@ import com.pro.www.dto.R;
 import com.pro.www.entity.OrderDetail;
 import com.pro.www.entity.Orders;
 import com.pro.www.entity.ShoppingCart;
+import com.pro.www.entity.User;
 import com.pro.www.service.impl.OrderDetailServiceImpl;
 import com.pro.www.service.impl.OrdersServiceImpl;
 import com.pro.www.service.impl.ShoppingCartServiceImpl;
+import com.pro.www.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +51,8 @@ public class OrdersController {
     private OrderDetailServiceImpl orderDetailService;
     @Autowired
     private ShoppingCartServiceImpl shoppingCartService;
+    @Autowired
+    private UserServiceImpl userService;
     @PostMapping("/submit")
     @ApiOperation("提交订单")
     public R<Orders> submit(@RequestBody Orders orders){
@@ -93,6 +98,10 @@ public class OrdersController {
         LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper = new LambdaQueryWrapper<>();
 
         ordersLambdaQueryWrapper.orderByAsc(Orders::getStatus).orderByDesc(Orders::getOrderTime);
+        ordersLambdaQueryWrapper.eq(number!=null,Orders::getNumber,number);
+        ordersLambdaQueryWrapper.ge(beginTime!=null,Orders::getOrderTime,beginTime);
+        ordersLambdaQueryWrapper.ge(endTime!=null,Orders::getOrderTime,endTime);
+
         ordersService.page(pageInfo,ordersLambdaQueryWrapper);
         BeanUtils.copyProperties(pageInfo, ordersDtoPage, "records");
         List<OrdersDto> list = pageInfo.getRecords().stream().map((item)->{
@@ -103,6 +112,13 @@ public class OrdersController {
             List<OrderDetail> details = orderDetailService.list(queryWrapper);
             BeanUtils.copyProperties(item,ordersDto);
             ordersDto.setOrderDetails(details);
+            Long uesrId = ordersDto.getUserId();
+            User user = userService.getById(uesrId);
+            if (StringUtils.isNotEmpty(user.getPhone())){
+                ordersDto.setUserName(user.getPhone());
+            }
+
+
             return ordersDto;
         }).collect(Collectors.toList());
 
